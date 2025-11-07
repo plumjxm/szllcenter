@@ -1,0 +1,182 @@
+<!--pages/detail/detail.wxml-->
+<view class="container">
+  <!-- 顶部大图 -->
+  <view class="hero {{windowData.color}}">
+    <view class="hero-overlay">
+      <text class="hero-icon">{{windowData.iconEmoji}}</text>
+      <text class="hero-title">{{windowData.name}}</text>
+      <text class="hero-type">{{windowData.type}}</text>
+      <text class="hero-desc">{{windowData.description}}</text>
+    </view>
+  </view>
+
+  <!-- 快捷信息 -->
+  <view class="quick-info">
+    <view class="info-item">
+      <image class="info-icon" src="/images/location.png" mode="aspectFit"></image>
+      <text class="info-text">{{windowData.distance}}</text>
+    </view>
+    <view class="info-item">
+      <image class="info-icon" src="/images/time.png" mode="aspectFit"></image>
+      <text class="info-text">{{windowData.openTime}}</text>
+    </view>
+    <view class="info-item">
+      <image class="info-icon" src="/images/fire.png" mode="aspectFit"></image>
+      <text class="info-text">{{windowData.visitors}}人访问</text>
+    </view>
+  </view>
+
+  <!-- 数字物种展示区 -->
+  <view class="species-section card">
+    <view class="section-header">
+      <text class="section-title">可捕获的数字物种</text>
+      <text class="section-badge">{{windowData.species.length}}个</text>
+    </view>
+
+    <view class="species-grid">
+      <view
+        wx:for="{{windowData.species}}"
+        wx:key="id"
+        class="species-card {{capturedSpecies.has(item.id) ? 'species-captured' : ''}}"
+        bindtap="captureSpecies"
+        data-species="{{item}}"
+      >
+        <view class="species-card-emoji">{{item.emoji}}</view>
+        <text class="species-card-title">{{item.title}}</text>
+        <text class="species-card-type">{{item.type}}</text>
+        <text class="species-card-reward">{{item.reward}}</text>
+
+        <view wx:if="{{capturedSpecies.has(item.id)}}" class="captured-badge">
+          <text class="captured-icon">✓</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 公告信息 -->
+  <view wx:if="{{windowData.announcement}}" class="announcement card">
+    <view class="announcement-header">
+      <image class="announcement-icon" src="/images/bell.png" mode="aspectFit"></image>
+      <text class="announcement-title">店铺公告</text>
+    </view>
+    <text class="announcement-text">{{windowData.announcement}}</text>
+  </view>
+
+  <!-- 服务项目 -->
+  <view wx:if="{{windowData.services}}" class="services card">
+    <text class="section-title">提供服务</text>
+    <view class="services-grid">
+      <view
+        wx:for="{{windowData.services}}"
+        wx:key="name"
+        class="service-item {{item.available ? '' : 'service-disabled'}}"
+      >
+        <text class="service-icon">{{item.icon}}</text>
+        <text class="service-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 邻里好货 -->
+  <view wx:if="{{windowData.neighborDeals}}" class="deals card">
+    <text class="section-title">邻里好货</text>
+    <scroll-view class="deals-scroll" scroll-x="true" show-scrollbar="{{false}}">
+      <view class="deals-list">
+        <view wx:for="{{windowData.neighborDeals}}" wx:key="title" class="deal-card">
+          <text class="deal-title">{{item.title}}</text>
+          <view class="deal-price-row">
+            <text class="deal-price">¥{{item.price}}</text>
+            <text class="deal-original">¥{{item.originalPrice}}</text>
+          </view>
+          <text class="deal-sales">已售{{item.sales}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 推荐路线 -->
+  <view wx:if="{{windowData.routes && windowData.routes.length > 0}}" class="routes card">
+    <text class="section-title">推荐路线</text>
+    <view wx:for="{{windowData.routes}}" wx:key="name" class="route-item">
+      <view class="route-info">
+        <text class="route-name">{{item.name}}</text>
+        <text class="route-meta">{{item.stops}}站 · {{item.distance}} · {{item.participants}}人参与</text>
+      </view>
+      <image class="route-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <!-- 评价 -->
+  <view class="reviews card">
+    <view class="reviews-header">
+      <text class="section-title">用户评价</text>
+      <view class="reviews-rating">
+        <text class="rating-score">{{windowData.rating}}</text>
+        <text class="rating-count">({{windowData.reviews}}条)</text>
+      </view>
+    </view>
+    <text class="reviews-tip">评价功能即将上线</text>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar safe-area">
+    <view class="bottom-actions">
+      <button class="action-btn" bindtap="openNavigation">
+        <image class="action-icon" src="/images/navigation.png" mode="aspectFit"></image>
+        <text class="action-text">导航</text>
+      </button>
+      <button class="action-btn" bindtap="shareWindow">
+        <image class="action-icon" src="/images/share.png" mode="aspectFit"></image>
+        <text class="action-text">分享</text>
+      </button>
+      <button class="action-btn action-btn-primary" bindtap="startTask">
+        <text class="action-text-primary">开始狩猎</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 物种卡片弹窗 -->
+  <view wx:if="{{showSpeciesPopup}}" class="species-popup-overlay" bindtap="closeSpeciesPopup">
+    <view class="species-popup scale-in" catchtap="stopPropagation">
+      <view class="popup-header {{selectedSpeciesItem.headerColor}}">
+        <text class="popup-emoji">{{selectedSpeciesItem.emoji}}</text>
+        <text class="popup-type">{{selectedSpeciesItem.type}}</text>
+      </view>
+
+      <view class="popup-body">
+        <text class="popup-title">{{selectedSpeciesItem.title}}</text>
+        <text class="popup-desc">{{selectedSpeciesItem.description}}</text>
+
+        <view class="popup-info">
+          <view class="popup-info-item">
+            <text class="popup-info-label">奖励</text>
+            <text class="popup-info-value">{{selectedSpeciesItem.reward}}</text>
+          </view>
+          <view class="popup-info-item">
+            <text class="popup-info-label">有效期</text>
+            <text class="popup-info-value">{{selectedSpeciesItem.validity}}</text>
+          </view>
+        </view>
+
+        <view class="popup-tips">
+          <image class="tips-icon" src="/images/lightbulb.png" mode="aspectFit"></image>
+          <text class="tips-text">{{selectedSpeciesItem.tips}}</text>
+        </view>
+      </view>
+
+      <view class="popup-actions">
+        <button class="btn-secondary" bindtap="closeSpeciesPopup">取消</button>
+        <button class="btn-primary" bindtap="confirmCapture">捕获</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 捕获成功动画 -->
+  <view wx:if="{{showCaptureAnimation}}" class="capture-animation">
+    <view class="capture-content scale-in">
+      <text class="capture-emoji">{{capturedEmoji}}</text>
+      <text class="capture-title">捕获成功!</text>
+      <text class="capture-reward">{{capturedReward}}</text>
+    </view>
+  </view>
+</view>

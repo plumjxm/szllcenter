@@ -1,0 +1,123 @@
+<!--pages/coupons/coupons.wxml-->
+<view class="container">
+  <!-- 顶部统计 -->
+  <view class="stats-header">
+    <view class="stats-card">
+      <text class="stats-number">{{totalCoupons}}</text>
+      <text class="stats-label">总卡券</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-number">{{availableCoupons}}</text>
+      <text class="stats-label">可使用</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-number">{{usedCoupons}}</text>
+      <text class="stats-label">已使用</text>
+    </view>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="id"
+      class="tab-item {{activeTab === item.status ? 'tab-item-active' : ''}}"
+      bindtap="switchTab"
+      data-tab="{{item.status}}"
+    >
+      <text>{{item.name}}</text>
+      <view wx:if="{{item.count > 0}}" class="tab-badge">{{item.count}}</view>
+    </view>
+  </view>
+
+  <!-- 卡券列表 -->
+  <scroll-view class="coupon-list" scroll-y="true">
+    <view wx:if="{{filteredCoupons.length === 0}}" class="empty-state">
+      <text class="empty-icon">🎫</text>
+      <text class="empty-text">{{emptyText}}</text>
+    </view>
+
+    <view
+      wx:for="{{filteredCoupons}}"
+      wx:key="id"
+      class="coupon-card fade-in {{item.status}}"
+      bindtap="viewCoupon"
+      data-id="{{item.id}}"
+    >
+      <view class="coupon-left {{item.color}}">
+        <text class="coupon-emoji">{{item.emoji}}</text>
+        <text class="coupon-type">{{item.type}}</text>
+      </view>
+
+      <view class="coupon-center">
+        <text class="coupon-title">{{item.title}}</text>
+        <text class="coupon-desc">{{item.description}}</text>
+        <view class="coupon-meta">
+          <text class="meta-shop">{{item.shopName}}</text>
+          <text class="meta-expire">{{item.expireText}}</text>
+        </view>
+      </view>
+
+      <view class="coupon-right">
+        <text class="coupon-value">{{item.value}}</text>
+        <view wx:if="{{item.status === 'available'}}" class="use-btn" catchtap="useCoupon" data-id="{{item.id}}">
+          使用
+        </view>
+        <text wx:elif="{{item.status === 'used'}}" class="status-text">已使用</text>
+        <text wx:elif="{{item.status === 'expired'}}" class="status-text">已过期</text>
+      </view>
+
+      <!-- 已使用/已过期遮罩 -->
+      <view wx:if="{{item.status !== 'available'}}" class="coupon-overlay"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 卡券详情弹窗 -->
+  <view wx:if="{{showCouponDetail}}" class="detail-overlay" bindtap="closeDetail">
+    <view class="detail-panel scale-in" catchtap="stopPropagation">
+      <view class="detail-header {{selectedCoupon.color}}">
+        <text class="detail-emoji">{{selectedCoupon.emoji}}</text>
+        <text class="detail-title">{{selectedCoupon.title}}</text>
+        <text class="detail-type">{{selectedCoupon.type}}</text>
+      </view>
+
+      <view class="detail-body">
+        <view class="detail-section">
+          <text class="detail-label">优惠内容</text>
+          <text class="detail-value-big">{{selectedCoupon.value}}</text>
+          <text class="detail-desc">{{selectedCoupon.description}}</text>
+        </view>
+
+        <view class="detail-section">
+          <text class="detail-label">适用商家</text>
+          <text class="detail-text">{{selectedCoupon.shopName}}</text>
+        </view>
+
+        <view class="detail-section">
+          <text class="detail-label">有效期</text>
+          <text class="detail-text">{{selectedCoupon.expireDate}}</text>
+        </view>
+
+        <view class="detail-section">
+          <text class="detail-label">使用说明</text>
+          <text class="detail-text">{{selectedCoupon.rules}}</text>
+        </view>
+
+        <!-- 核销码(仅可用券显示) -->
+        <view wx:if="{{selectedCoupon.status === 'available'}}" class="qr-section">
+          <view class="qr-code">
+            <text class="qr-placeholder">{{selectedCoupon.code}}</text>
+          </view>
+          <text class="qr-tip">出示此码给商家核销</text>
+        </view>
+      </view>
+
+      <view class="detail-actions">
+        <button wx:if="{{selectedCoupon.status === 'available'}}" class="btn-primary" bindtap="showQRCode">
+          立即使用
+        </button>
+        <button class="btn-secondary" bindtap="closeDetail">关闭</button>
+      </view>
+    </view>
+  </view>
+</view>

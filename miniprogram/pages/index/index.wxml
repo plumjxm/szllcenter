@@ -1,0 +1,179 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 顶部搜索栏 -->
+  <view class="header">
+    <view class="search-bar">
+      <image class="search-icon" src="/images/search.png" mode="aspectFit"></image>
+      <input class="search-input" placeholder="搜索橱窗、商家..." placeholder-style="color: #9ca3af" />
+    </view>
+    <view class="location-bar" bindtap="changeLocation">
+      <image class="location-icon" src="/images/location.png" mode="aspectFit"></image>
+      <text class="location-text">{{currentCity}}</text>
+    </view>
+  </view>
+
+  <!-- 物种分类 -->
+  <scroll-view class="species-scroll" scroll-x="true" show-scrollbar="{{false}}">
+    <view class="species-list">
+      <view
+        wx:for="{{species}}"
+        wx:key="name"
+        class="species-item {{selectedSpecies === item.name ? 'species-item-active' : ''}}"
+        bindtap="selectSpecies"
+        data-name="{{item.name}}"
+      >
+        <text class="species-icon">{{item.icon}}</text>
+        <text class="species-name">{{item.name}}</text>
+        <text class="species-count">{{item.count}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Tab切换 -->
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="id"
+      class="tab-item {{activeTab === item.name ? 'tab-item-active' : ''}}"
+      bindtap="switchTab"
+      data-tab="{{item.name}}"
+    >
+      <text>{{item.name}}</text>
+      <view wx:if="{{activeTab === item.name}}" class="tab-indicator"></view>
+    </view>
+  </view>
+
+  <!-- 橱窗列表 -->
+  <scroll-view class="window-list" scroll-y="true">
+    <view wx:if="{{filteredWindows.length === 0}}" class="empty-state">
+      <text class="empty-icon">🔍</text>
+      <text class="empty-text">暂无橱窗数据</text>
+    </view>
+
+    <view
+      wx:for="{{filteredWindows}}"
+      wx:key="id"
+      class="window-card fade-in"
+      bindtap="goToDetail"
+      data-id="{{item.id}}"
+    >
+      <!-- 卡片头部 -->
+      <view class="window-header {{item.color}}">
+        <view class="window-header-content">
+          <view class="window-title-row">
+            <text class="window-icon">{{item.iconEmoji}}</text>
+            <text class="window-name">{{item.name}}</text>
+            <view class="window-tag">{{item.type}}</view>
+          </view>
+          <text class="window-desc">{{item.description}}</text>
+
+          <view class="window-meta">
+            <view class="meta-item">
+              <image class="meta-icon" src="/images/location.png" mode="aspectFit"></image>
+              <text class="meta-text">{{item.distance}}</text>
+            </view>
+            <view class="meta-item">
+              <image class="meta-icon" src="/images/lucky.png" mode="aspectFit"></image>
+              <text class="meta-text">+{{item.lucky}}好运</text>
+            </view>
+            <view class="meta-item">
+              <image class="meta-icon" src="/images/fire.png" mode="aspectFit"></image>
+              <text class="meta-text">{{item.visitors}}人</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 卡片内容 -->
+      <view class="window-body">
+        <!-- 物种预览 -->
+        <view class="species-preview">
+          <text class="preview-title">可捕获物种</text>
+          <view class="preview-list">
+            <view
+              wx:for="{{item.speciesPreview}}"
+              wx:for-item="sp"
+              wx:key="id"
+              class="preview-item"
+            >
+              <text class="preview-emoji">{{sp.emoji}}</text>
+              <text class="preview-name">{{sp.name}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 标签 -->
+        <view class="window-tags">
+          <text wx:for="{{item.tags}}" wx:key="*this" class="tag">{{item}}</text>
+        </view>
+
+        <!-- 底部信息 -->
+        <view class="window-footer">
+          <view class="footer-left">
+            <image class="star-icon" src="/images/star.png" mode="aspectFit"></image>
+            <text class="rating">{{item.rating}}</text>
+            <text class="reviews">({{item.reviews}})</text>
+          </view>
+          <view class="footer-right">
+            <text class="special-offer">{{item.specialOffer}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 浮动按钮 -->
+  <view class="fab-group">
+    <view class="fab" bindtap="openFilter">
+      <image class="fab-icon" src="/images/filter.png" mode="aspectFit"></image>
+    </view>
+    <view class="fab fab-map" bindtap="openMap">
+      <image class="fab-icon" src="/images/map.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <!-- 筛选面板 -->
+  <view wx:if="{{showFilter}}" class="filter-overlay" bindtap="closeFilter">
+    <view class="filter-panel" catchtap="stopPropagation">
+      <view class="filter-header">
+        <text class="filter-title">筛选橱窗</text>
+        <text class="filter-reset" bindtap="resetFilter">重置</text>
+      </view>
+
+      <view class="filter-section">
+        <text class="filter-label">距离</text>
+        <view class="filter-options">
+          <view
+            wx:for="{{distanceOptions}}"
+            wx:key="value"
+            class="filter-option {{filterDistance === item.value ? 'filter-option-active' : ''}}"
+            bindtap="selectDistance"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="filter-section">
+        <text class="filter-label">评分</text>
+        <view class="filter-options">
+          <view
+            wx:for="{{ratingOptions}}"
+            wx:key="value"
+            class="filter-option {{filterRating === item.value ? 'filter-option-active' : ''}}"
+            bindtap="selectRating"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="filter-actions">
+        <button class="btn-secondary" bindtap="closeFilter">取消</button>
+        <button class="btn-primary" bindtap="applyFilter">确定</button>
+      </view>
+    </view>
+  </view>
+</view>

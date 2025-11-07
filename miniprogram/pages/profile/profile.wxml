@@ -1,0 +1,157 @@
+<!--pages/profile/profile.wxml-->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="profile-card">
+    <view class="profile-header gradient-bg">
+      <image class="avatar" src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+      <view class="user-info">
+        <text class="username">{{userInfo.nickName || '橱窗猎人'}}</text>
+        <text class="user-id">ID: {{userInfo.id || '123456'}}</text>
+      </view>
+      <button wx:if="{{!hasUserInfo}}" class="login-btn" bindtap="login">登录</button>
+    </view>
+
+    <!-- 好运值 -->
+    <view class="lucky-section">
+      <view class="lucky-card">
+        <text class="lucky-icon">✨</text>
+        <view class="lucky-info">
+          <text class="lucky-value">{{luckyValue}}</text>
+          <text class="lucky-label">好运值</text>
+        </view>
+      </view>
+
+      <view class="stats-row">
+        <view class="stat-item">
+          <text class="stat-number">{{exploredCount}}</text>
+          <text class="stat-label">已探索</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-number">{{capturedCount}}</text>
+          <text class="stat-label">已捕获</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-number">{{achievementCount}}</text>
+          <text class="stat-label">成就</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我的功能 -->
+  <view class="menu-section">
+    <text class="section-title">我的功能</text>
+
+    <view class="menu-list card">
+      <view class="menu-item" bindtap="goToPage" data-url="/pages/collection/collection">
+        <view class="menu-left">
+          <text class="menu-icon">🎨</text>
+          <text class="menu-name">我的图鉴</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-badge" wx:if="{{collectionCount > 0}}">{{collectionCount}}</text>
+          <image class="menu-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+        </view>
+      </view>
+
+      <view class="menu-item" bindtap="goToPage" data-url="/pages/routes/routes">
+        <view class="menu-left">
+          <text class="menu-icon">🗺️</text>
+          <text class="menu-name">我的路线</text>
+        </view>
+        <image class="menu-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+      </view>
+
+      <view class="menu-item" bindtap="goToPage" data-url="/pages/achievements/achievements">
+        <view class="menu-left">
+          <text class="menu-icon">🏆</text>
+          <text class="menu-name">我的成就</text>
+        </view>
+        <view class="menu-right">
+          <text class="menu-badge" wx:if="{{achievementCount > 0}}">{{achievementCount}}</text>
+          <image class="menu-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+        </view>
+      </view>
+
+      <view class="menu-item" bindtap="goToPage" data-url="/pages/favorites/favorites">
+        <view class="menu-left">
+          <text class="menu-icon">⭐</text>
+          <text class="menu-name">我的收藏</text>
+        </view>
+        <image class="menu-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 更多服务 -->
+  <view class="menu-section">
+    <text class="section-title">更多服务</text>
+
+    <view class="menu-list card">
+      <view class="menu-item" bindtap="goToPage" data-url="/pages/invite/invite">
+        <view class="menu-left">
+          <text class="menu-icon">👥</text>
+          <text class="menu-name">邀请好友</text>
+        </view>
+        <image class="menu-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+      </view>
+
+      <view class="menu-item" bindtap="goToPage" data-url="/pages/feedback/feedback">
+        <view class="menu-left">
+          <text class="menu-icon">💬</text>
+          <text class="menu-name">意见反馈</text>
+        </view>
+        <image class="menu-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+      </view>
+
+      <view class="menu-item" bindtap="goToPage" data-url="/pages/about/about">
+        <view class="menu-left">
+          <text class="menu-icon">ℹ️</text>
+          <text class="menu-name">关于我们</text>
+        </view>
+        <image class="menu-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+      </view>
+
+      <view class="menu-item" bindtap="goToPage" data-url="/pages/settings/settings">
+        <view class="menu-left">
+          <text class="menu-icon">⚙️</text>
+          <text class="menu-name">设置</text>
+        </view>
+        <image class="menu-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 本周数据 -->
+  <view class="stats-section">
+    <text class="section-title">本周数据</text>
+
+    <view class="stats-grid card">
+      <view class="stats-item">
+        <text class="stats-icon">🎯</text>
+        <text class="stats-number">{{weekStats.explored}}</text>
+        <text class="stats-label">探索橱窗</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-icon">🚶</text>
+        <text class="stats-number">{{weekStats.distance}}km</text>
+        <text class="stats-label">行走距离</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-icon">✨</text>
+        <text class="stats-number">+{{weekStats.lucky}}</text>
+        <text class="stats-label">好运值</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-icon">🎨</text>
+        <text class="stats-number">{{weekStats.species}}</text>
+        <text class="stats-label">捕获物种</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view wx:if="{{hasUserInfo}}" class="logout-section">
+    <button class="logout-btn" bindtap="logout">退出登录</button>
+  </view>
+</view>
