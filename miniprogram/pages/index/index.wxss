@@ -1,0 +1,419 @@
+/* pages/index/index.wxss */
+.container {
+  min-height: 100vh;
+  background: #f8f8f8;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 顶部搜索栏 */
+.header {
+  background: #fff;
+  padding: 24rpx 32rpx;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #f3f4f6;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.search-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 12rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #374151;
+}
+
+.location-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 8rpx;
+}
+
+.location-text {
+  font-size: 28rpx;
+  color: #6366f1;
+  font-weight: 500;
+}
+
+/* 物种分类滚动 */
+.species-scroll {
+  background: #fff;
+  padding: 24rpx 0;
+  white-space: nowrap;
+}
+
+.species-list {
+  display: inline-flex;
+  padding: 0 32rpx;
+}
+
+.species-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 48rpx;
+  padding: 16rpx 24rpx;
+  border-radius: 16rpx;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.species-item-active {
+  background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
+}
+
+.species-icon {
+  font-size: 48rpx;
+  margin-bottom: 8rpx;
+}
+
+.species-name {
+  font-size: 24rpx;
+  color: #374151;
+  margin-bottom: 4rpx;
+}
+
+.species-count {
+  font-size: 20rpx;
+  color: #9ca3af;
+}
+
+/* Tab切换 */
+.tabs {
+  display: flex;
+  background: #fff;
+  padding: 0 32rpx;
+  border-bottom: 2rpx solid #f3f4f6;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  color: #6b7280;
+  position: relative;
+}
+
+.tab-item-active {
+  color: #6366f1;
+  font-weight: 500;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 6rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 3rpx;
+}
+
+/* 橱窗列表 */
+.window-list {
+  height: calc(100vh - 460rpx);
+  padding: 24rpx 32rpx;
+}
+
+.window-card {
+  background: #fff;
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 卡片头部 */
+.window-header {
+  padding: 32rpx;
+  position: relative;
+}
+
+.window-header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.window-title-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.window-icon {
+  font-size: 40rpx;
+  margin-right: 12rpx;
+}
+
+.window-name {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1f2937;
+  margin-right: 12rpx;
+}
+
+.window-tag {
+  padding: 6rpx 16rpx;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  color: #6b7280;
+}
+
+.window-desc {
+  font-size: 26rpx;
+  color: #6b7280;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.window-meta {
+  display: flex;
+  gap: 24rpx;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+}
+
+.meta-icon {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 6rpx;
+}
+
+.meta-text {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+/* 卡片内容 */
+.window-body {
+  padding: 24rpx 32rpx 32rpx;
+}
+
+.species-preview {
+  margin-bottom: 24rpx;
+}
+
+.preview-title {
+  font-size: 24rpx;
+  color: #9ca3af;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.preview-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.preview-item {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 20rpx;
+  background: #f9fafb;
+  border-radius: 12rpx;
+}
+
+.preview-emoji {
+  font-size: 28rpx;
+  margin-right: 8rpx;
+}
+
+.preview-name {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.window-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 24rpx;
+}
+
+.window-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24rpx;
+  border-top: 2rpx solid #f3f4f6;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+}
+
+.star-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 6rpx;
+}
+
+.rating {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #f59e0b;
+  margin-right: 8rpx;
+}
+
+.reviews {
+  font-size: 24rpx;
+  color: #9ca3af;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+}
+
+.special-offer {
+  font-size: 24rpx;
+  color: #ef4444;
+  font-weight: 500;
+}
+
+/* 浮动按钮 */
+.fab-group {
+  position: fixed;
+  right: 32rpx;
+  bottom: calc(120rpx + env(safe-area-inset-bottom));
+  z-index: 99;
+}
+
+.fab {
+  width: 96rpx;
+  height: 96rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.4);
+  margin-bottom: 24rpx;
+}
+
+.fab-map {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  box-shadow: 0 8rpx 24rpx rgba(245, 158, 11, 0.4);
+}
+
+.fab-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+/* 筛选面板 */
+.filter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+}
+
+.filter-panel {
+  width: 100%;
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 48rpx 32rpx;
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+
+.filter-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.filter-reset {
+  font-size: 28rpx;
+  color: #6366f1;
+}
+
+.filter-section {
+  margin-bottom: 32rpx;
+}
+
+.filter-label {
+  font-size: 28rpx;
+  color: #374151;
+  font-weight: 500;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.filter-option {
+  padding: 16rpx 32rpx;
+  background: #f3f4f6;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: #6b7280;
+}
+
+.filter-option-active {
+  background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
+  color: #6366f1;
+  font-weight: 500;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 48rpx;
+}
+
+.filter-actions button {
+  flex: 1;
+}
